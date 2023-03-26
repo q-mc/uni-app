@@ -8,6 +8,13 @@
       </navigator> 
     </swiper-item>
   </swiper>
+  
+  <!-- 分类导航区域 -->
+  <view class="nav_list">
+    <view class="nav_item" v-for="(item,i) in navList" :key="i" @click="navClickHandler(item)">
+      <image :src="item.image_src" class="nav-img"></image>
+    </view>
+  </view>
 	</view>
 </template>
 
@@ -16,12 +23,16 @@
 		data() {
 			return {
 				//这是轮播图的数据列表
-        swiperList: []
+        swiperList: [],
+        //分类导航的数据列表
+        navList: []
 			};
 		},
     onLoad(){
       //调用方法，获取轮播图的数据
       this.getSwiperList()
+      //调用方法，获取导航的数据
+      this.getNavList()
     },
     methods:{
       async getSwiperList(){
@@ -30,7 +41,21 @@
         if(res.meta.status !== 200) return uni.$showMsg()
         //请求成功，为 data 中的数据赋值
         this.swiperList=res.message
-        uni.$showMsg('数据请求成功!')
+      },
+      async getNavList(){
+      const {data : res} = await uni.$http.get('/api/public/v1/home/catitems')
+      //请求失败
+      if(res.meta.status !== 200) return uni.$showMsg()
+      //请求成功，为 data 中的数据赋值
+      this.navList=res.message
+      },
+      //点击事件
+      navClickHandler(item){
+        if(item.name === '分类'){
+          uni.switchTab({
+            url:'/pages/cate/cate'
+          })
+        }
       }
     }
 	}
@@ -44,6 +69,17 @@
     image{
       width: 100%;
       height: 100%;
+    }
+  }
+  
+  .nav_list{
+    display: flex;
+    justify-content: space-around;
+    margin: 15px 0;
+    
+    .nav-img{
+      width: 128rpx;
+      height: 140rpx;
     }
   }
 </style>
