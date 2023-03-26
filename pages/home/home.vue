@@ -27,15 +27,10 @@
       async getSwiperList(){
         const {data : res} =await uni.$http.get('/api/public/v1/home/swiperdata')
         //请求失败
-        if(res.meta.status !== 200){
-          return uni.showToast({
-            title:'数据请求失败！',
-            duration:1500,
-            icon:'none'
-          })
-        }
+        if(res.meta.status !== 200) return uni.$showMsg()
         //请求成功，为 data 中的数据赋值
         this.swiperList=res.message
+        uni.$showMsg('数据请求成功!')
       }
     }
 	}
