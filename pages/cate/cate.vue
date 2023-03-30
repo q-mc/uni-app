@@ -1,5 +1,9 @@
 <template>
 	<view>
+    <!-- 这是自定义的搜索组件 -->
+    <!-- <my-search :bgcolor="'pink'" :radius="3"></my-search> -->
+    <my-search @click="gotoSearch"></my-search>
+    
     <view class="scroll-view-container">
       <!-- 左侧的滑动区域 -->
       <scroll-view scroll-y="true" class="left-scroll-view" :style="{height : wh + 'px'}">
@@ -46,7 +50,7 @@
     onLoad(){
       const sysInfo = uni.getSystemInfoSync()
       //console.log(sysInfo)
-      this.wh = sysInfo.windowHeight
+      this.wh = sysInfo.windowHeight - 50
       //调用方法，获取楼层的数据
       this.getCateList()
     },
@@ -75,6 +79,12 @@
       gotoGoodsList(item3){
         uni.navigateTo({
           url:'/subpkg/goods_list/goods_list?cid=' + item3.cat_id
+        })
+      },
+      //跳转到搜索页面
+      gotoSearch(){
+        uni.navigateTo({
+          url: '/subpkg/search/search'
         })
       }
     }
